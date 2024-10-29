@@ -1,0 +1,9 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",  // Uses Prettier as the default formatter
+  "editor.formatOnSave": true,                          // Automatically formats on save
+  "prettier.singleQuote": true,                         // Optional: Customize Prettier settings
+  "prettier.trailingComma": "es5",
+  "prettier.tabWidth": 2,
+  "prettier.semi": false
+}
+
