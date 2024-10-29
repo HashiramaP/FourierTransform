@@ -1,1 +1,1 @@
-Website that will be showcasing different Fourier Transforms 24/7
+Website that will be showcasing different Fourier Transforms animations 24/7
