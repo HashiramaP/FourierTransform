@@ -1,4 +1,3 @@
-import React from 'react';
 import reactLogo from './assets/react.svg';
 import FilePathDisplay from './components/FourierPlot';
 
