@@ -9,6 +9,7 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
     [],
   );
   const [fourierTransform, setFourierTransform] = useState([]);
+  const [path, setPath] = useState<{ x: number; y: number }[]>([]); // Store path points
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -81,7 +82,7 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
     const N = x.length;
     const TWO_PI = 2 * Math.PI;
 
-    for (let k = 0; k < N; k++) {
+    for (let k = 0; k < 10; k++) {
       let re = 0;
       let im = 0;
 
@@ -101,6 +102,8 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
       let amp = Math.sqrt(re * re + im * im);
       let phase = Math.atan2(im, re);
 
+      console.log({ re, im, freq, amp, phase });
+
       X[k] = { re, im, freq, amp, phase };
     }
 
@@ -108,9 +111,17 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
     return X;
   }
 
+  const lool = [
+    { x: 100, y: 100 }, // Top-right corner
+    { x: 100, y: -100 }, // Bottom-right corner
+    { x: -100, y: -100 }, // Bottom-left corner
+    { x: -100, y: 100 }, // Top-left corner
+    { x: 100, y: 100 }, // Close the square by returning to the top-right corner
+  ];
+
   useEffect(() => {
     if (coordinates.length > 0) {
-      dft(coordinates);
+      dft(lool);
     }
   }, [coordinates]);
 
@@ -149,6 +160,21 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
       ctx.stroke();
     });
 
+    // Add the final red dot position to the path array
+    setPath(prevPath => [...prevPath, { x, y }]);
+
+    // Draw the trace by connecting path points
+    ctx.beginPath();
+    ctx.moveTo(path[0].x, path[0].y);
+    path.forEach((point, i) => {
+      if (i > 0) {
+        ctx.lineTo(point.x, point.y);
+      }
+    });
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
     // Draw the final trace point
     ctx.beginPath();
     ctx.arc(x, y, 2, 0, 2 * Math.PI);
@@ -159,7 +185,7 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
   useEffect(() => {
     const interval = setInterval(draw, 1000 / 60); // 60 FPS
     return () => clearInterval(interval);
-  }, [fourierTransform]);
+  }, [fourierTransform, path]); // Add path to dependency array
 
   return (
     <div>
