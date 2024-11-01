@@ -82,7 +82,7 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
     const N = x.length;
     const TWO_PI = 2 * Math.PI;
 
-    for (let k = 0; k < 10; k++) {
+    for (let k = 0; k < 4; k++) {
       let re = 0;
       let im = 0;
 
