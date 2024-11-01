@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dft, { dft2 } from '../utils/dft';
 
 interface FilePathDisplayProps {
   filePath: string;
@@ -145,8 +146,23 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
     return coords;
   };
 
+  const { amplitude, phase } = dft(
+    [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+      { x: 20, y: 0 },
+      { x: 30, y: 0 },
+      { x: 40, y: 0 },
+      { x: 50, y: 0 },
+    ],
+    1,
+  );
   return (
     <div>
+      <p>
+        Amp: {amplitude}
+        Phase: {phase}
+      </p>
       <h3>File Path:</h3>
       <p>{filePath}</p>
 
