@@ -27,4 +27,25 @@ function dft(x: Point[], f: number): ComplexExponential {
   return { amplitude, phase };
 }
 
+export function generateOvalPoints(
+  centerX: number,
+  centerY: number,
+  width: number,
+  height: number,
+  numPoints: number,
+): Point[] {
+  const points: Point[] = [];
+  const a = width / 2; // Semi-major axis
+  const b = height / 2; // Semi-minor axis
+
+  for (let i = 0; i < numPoints; i++) {
+    const theta = (2 * Math.PI * i) / numPoints; // Angle in radians
+    const x = centerX + a * Math.cos(theta);
+    const y = centerY + b * Math.sin(theta);
+    points.push({ x, y });
+  }
+
+  return points;
+}
+
 export default dft;

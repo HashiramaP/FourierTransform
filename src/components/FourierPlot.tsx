@@ -1,6 +1,9 @@
+// FilePathDisplay.tsx
 import React, { useEffect } from 'react';
-import dft from '../utils/dft';
 import extractPathCoordinates from '../utils/extractPathCoordinates';
+import DFTCircleDisplay from './DFTCircleDisplay';
+import { generateOvalPoints } from '../utils/dft';
+import { interpolatePoints } from '../utils/interpolatedPoints';
 
 interface FilePathDisplayProps {
   filePath: string;
@@ -37,23 +40,25 @@ const FilePathDisplay: React.FC<FilePathDisplayProps> = ({ filePath }) => {
     fetchSVG();
   }, [filePath]);
 
-  const { amplitude, phase } = dft(
-    [
-      { x: 0, y: 0 },
-      { x: 10, y: 0 },
-      { x: 20, y: 0 },
-      { x: 30, y: 0 },
-      { x: 40, y: 0 },
-      { x: 50, y: 0 },
-    ],
-    1,
-  );
+  let points = [
+    { x: -25, y: -25 }, // Bottom-left corner
+    { x: 25, y: -25 }, // Bottom-right corner
+    { x: 25, y: 25 }, // Top-right corner
+    { x: -25, y: 25 }, // Top-left corner
+    { x: -25, y: -25 }, // Closing back to the starting point
+  ];
+
+  const ovalPoints = generateOvalPoints(250, 250, 200, 100, 1000);
+
+  //ovalPoints = interpolatePoints(ovalPoints, 0.1); // Interpolate points to ensure they are close together
+
+  //points = interpolatePoints(points, 0.1); // Interpolate points to ensure they are close together
+
+  const frequencies = Array.from({ length: 100 }, (_, i) => i + 1); // 10 frequencies
+
   return (
     <div>
-      <p>
-        Amp: {amplitude}
-        Phase: {phase}
-      </p>
+      <DFTCircleDisplay points={ovalPoints} frequencies={frequencies} />
     </div>
   );
 };
